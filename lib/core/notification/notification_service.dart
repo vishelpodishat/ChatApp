@@ -19,23 +19,18 @@ class NotificationService {
 
     await _localNotifications.initialize(initSettings);
 
-    // Only initialize FCM on Android or iOS with proper setup
     if (!_shouldSkipFCM()) {
       try {
         await _firebaseMessaging.requestPermission(alert: true, badge: true, sound: true);
 
-        // Listen to foreground messages
         FirebaseMessaging.onMessage.listen((RemoteMessage message) {
           _showLocalNotification(message);
         });
 
         _isInitialized = true;
-      } catch (e) {
-        print('FCM initialization error: $e');
-      }
+      } catch (e) {}
     } else {
-      print('Skipping FCM initialization - running on iOS without APNS');
-      _isInitialized = true; // Mark as initialized even without FCM
+      _isInitialized = true;
     }
   }
 
@@ -74,7 +69,6 @@ class NotificationService {
     try {
       return await _firebaseMessaging.getToken();
     } catch (e) {
-      print('Error getting FCM token: $e');
       return null;
     }
   }

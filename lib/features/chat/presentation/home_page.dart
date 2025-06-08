@@ -18,30 +18,24 @@ class HomePage extends StatelessWidget {
         final tabsRouter = AutoTabsRouter.of(context);
         return BlocBuilder<AuthBloc, AuthState>(
           builder: (context, state) {
-            print('AuthState: $state'); // Debug log
-
             switch (state) {
               case Authenticated(:final user):
-                print('User authenticated: ${user.uid}, ${user.displayName}'); // Debug log
-
                 return MultiBlocProvider(
                   providers: [
                     BlocProvider(
                       create: (context) {
-                        print('Creating ChatListBloc for user: ${user.uid}'); // Debug log
                         return getIt<ChatListBloc>()..add(LoadChats(user.uid));
                       },
                     ),
                     BlocProvider(
                       create: (context) {
-                        print('Creating UsersBloc'); // Debug log
                         return getIt<UsersBloc>()..add(LoadUsers());
                       },
                     ),
                   ],
                   child: Scaffold(
                     appBar: AppBar(
-                      title: Text(tabsRouter.activeIndex == 0 ? 'Chats' : 'Users'),
+                      title: Text(tabsRouter.activeIndex == 0 ? 'Чаты' : 'Пользователи'),
                       actions: [
                         PopupMenuButton<String>(
                           onSelected: (value) {
@@ -54,7 +48,7 @@ class HomePage extends StatelessWidget {
                                 const PopupMenuItem(
                                   value: 'logout',
                                   child: Row(
-                                    children: [Icon(Icons.logout, color: Colors.red), SizedBox(width: 8), Text('Logout')],
+                                    children: [Icon(Icons.logout, color: Colors.red), SizedBox(width: 8), Text('Выйти')],
                                   ),
                                 ),
                               ],
@@ -69,19 +63,21 @@ class HomePage extends StatelessWidget {
                         NavigationDestination(
                           icon: Icon(Icons.chat_bubble_outline),
                           selectedIcon: Icon(Icons.chat_bubble),
-                          label: 'Chats',
+                          label: 'Чаты',
                         ),
-                        NavigationDestination(icon: Icon(Icons.people_outline), selectedIcon: Icon(Icons.people), label: 'Users'),
+                        NavigationDestination(
+                          icon: Icon(Icons.people_outline),
+                          selectedIcon: Icon(Icons.people),
+                          label: 'Пользователи',
+                        ),
                       ],
                     ),
                   ),
                 );
               case Unauthenticated():
-                print('User unauthenticated, redirecting to login'); // Debug log
                 context.router.replace(const LoginView());
                 return const Scaffold(body: Center(child: CircularProgressIndicator()));
               default:
-                print('Unknown auth state: $state'); // Debug log
                 return const Scaffold(body: Center(child: CircularProgressIndicator()));
             }
           },

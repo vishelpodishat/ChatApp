@@ -24,10 +24,10 @@ class ChatsPage extends StatelessWidget {
                 children: [
                   Icon(Icons.chat_bubble_outline, size: 80, color: Colors.grey[400]),
                   const SizedBox(height: 16),
-                  Text('No chats yet', style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.grey[600])),
+                  Text('Пока нет чатов', style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.grey[600])),
                   const SizedBox(height: 8),
                   Text(
-                    'Start a conversation from the Users tab',
+                    'Начните беседу с вкладки «Пользователи»',
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.grey[500]),
                   ),
                 ],
@@ -89,7 +89,7 @@ class ChatsPage extends StatelessWidget {
                             fontWeight: chat.unreadCount > 0 ? FontWeight.w500 : FontWeight.normal,
                           ),
                         )
-                        : Text('Start a conversation', style: TextStyle(color: Colors.grey[500], fontStyle: FontStyle.italic)),
+                        : Text('Начать разговор', style: TextStyle(color: Colors.grey[500], fontStyle: FontStyle.italic)),
                 trailing: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.end,
@@ -136,7 +136,7 @@ class ChatsPage extends StatelessWidget {
     if (difference.inDays == 0) {
       return DateFormat('HH:mm').format(timestamp);
     } else if (difference.inDays == 1) {
-      return 'Yesterday';
+      return 'Вчера';
     } else if (difference.inDays < 7) {
       return DateFormat('EEEE').format(timestamp);
     } else {

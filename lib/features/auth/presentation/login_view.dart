@@ -1,10 +1,6 @@
-import 'dart:io';
-
 import 'package:auto_route/auto_route.dart';
-import 'package:chat_app/core/di/di.dart';
 import 'package:chat_app/core/routing/app_router.gr.dart';
 import 'package:chat_app/features/auth/presentation/bloc/auth_bloc.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

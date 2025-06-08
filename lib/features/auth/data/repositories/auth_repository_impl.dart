@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:chat_app/core/di/di.dart';
 import 'package:chat_app/core/errors/error.dart';
 import 'package:chat_app/core/notification/notification_service.dart';
@@ -9,7 +7,6 @@ import 'package:chat_app/features/auth/domain/repositories/auth_repository.dart'
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
@@ -48,11 +45,6 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<Either<Failure, UserEntity>> signInWithGoogle() async {
-    // if (Platform.isIOS && kDebugMode) {
-    //   return _mockSignIn();
-    // }
-
-    // FOR Prod
     try {
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
       if (googleUser == null) {
@@ -73,39 +65,6 @@ class AuthRepositoryImpl implements AuthRepository {
     } catch (e) {
       print('Sign in error: $e');
       return Left(AuthFailure(e.toString()));
-    }
-  }
-
-  // Mock sign in for iOS testing
-  Future<Either<Failure, UserEntity>> _mockSignIn() async {
-    try {
-      print('Using mock sign-in for iOS testing...');
-
-      // Sign in with a test account using email/password
-      final userCredential = await _firebaseAuth.signInAnonymously();
-      final user = userCredential.user;
-
-      if (user == null) {
-        return Left(AuthFailure('Mock sign in failed'));
-      }
-
-      // Create a mock user with test data
-      final userModel = UserModel(
-        uid: user.uid,
-        email: 'testuser@example.com',
-        displayName: 'Test User',
-        photoUrl: null,
-        lastSeen: DateTime.now(),
-        isOnline: true,
-        fcmToken: null,
-      );
-
-      await _firestore.collection('users').doc(user.uid).set(userModel.toMap(), SetOptions(merge: true));
-
-      return Right(userModel);
-    } catch (e) {
-      print('Mock sign in error: $e');
-      return Left(AuthFailure('Mock sign in failed: $e'));
     }
   }
 

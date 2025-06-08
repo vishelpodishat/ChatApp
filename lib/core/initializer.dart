@@ -16,8 +16,7 @@ class Initializer {
     try {
       await getIt<NotificationService>().initialize();
     } catch (e) {
-      print('Notification initialization error: $e');
-      // Continue running the app even if notifications fail
+      print('ERRROR::::${e.toString()}');
     }
   }
 }

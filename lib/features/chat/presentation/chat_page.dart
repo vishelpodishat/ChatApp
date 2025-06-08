@@ -31,7 +31,6 @@ class _ChatPageState extends State<ChatPage> {
     super.initState();
     _chatBloc = getIt<ChatBloc>()..add(LoadMessages(widget.chatId));
 
-    // Mark messages as read
     final currentUser = (context.read<AuthBloc>().state as Authenticated).user;
     _chatBloc.add(MarkMessagesAsRead(widget.chatId, currentUser.uid));
   }
@@ -74,10 +73,10 @@ class _ChatPageState extends State<ChatPage> {
                   children: [
                     Text(widget.otherUser.displayName, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
                     if (widget.otherUser.isOnline)
-                      const Text('Online', style: TextStyle(fontSize: 12, color: Colors.green))
+                      const Text('Онлайн', style: TextStyle(fontSize: 12, color: Colors.green))
                     else
                       Text(
-                        'Last seen ${_formatLastSeen(widget.otherUser.lastSeen)}',
+                        'Последний раз видели ${_formatLastSeen(widget.otherUser.lastSeen)}',
                         style: TextStyle(fontSize: 12, color: Colors.grey[600]),
                       ),
                   ],
@@ -102,12 +101,12 @@ class _ChatPageState extends State<ChatPage> {
                             Icon(Icons.chat_bubble_outline, size: 80, color: Colors.grey[400]),
                             const SizedBox(height: 16),
                             Text(
-                              'No messages yet',
+                              'Пока нет сообщений',
                               style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.grey[600]),
                             ),
                             const SizedBox(height: 8),
                             Text(
-                              'Send a message to start the conversation',
+                              'Отправьте сообщение, чтобы начать разговор',
                               style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.grey[500]),
                             ),
                           ],
@@ -177,13 +176,13 @@ class _ChatPageState extends State<ChatPage> {
     final difference = now.difference(lastSeen);
 
     if (difference.inMinutes < 1) {
-      return 'just now';
+      return 'прямо сейчас';
     } else if (difference.inHours < 1) {
-      return '${difference.inMinutes}m ago';
+      return '${difference.inMinutes}минут назад';
     } else if (difference.inDays < 1) {
-      return '${difference.inHours}h ago';
+      return '${difference.inHours}час назад';
     } else if (difference.inDays < 7) {
-      return '${difference.inDays}d ago';
+      return '${difference.inDays}дней назад';
     } else {
       return DateFormat('dd/MM/yyyy').format(lastSeen);
     }
@@ -196,9 +195,9 @@ class _ChatPageState extends State<ChatPage> {
     final messageDate = DateTime(date.year, date.month, date.day);
 
     if (messageDate == today) {
-      return 'Today';
+      return 'Сегодня';
     } else if (messageDate == yesterday) {
-      return 'Yesterday';
+      return 'Вчера';
     } else {
       return DateFormat('MMMM d, yyyy').format(date);
     }

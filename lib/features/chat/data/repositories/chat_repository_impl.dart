@@ -35,20 +35,17 @@ class ChatRepositoryImpl implements ChatRepository {
               final participants = List<String>.from(data['participants'] ?? []);
 
               if (participants.length < 2) {
-                print('Skipping chat ${doc.id}: not enough participants');
                 continue;
               }
 
               final otherUserId = participants.firstWhere((id) => id != userId, orElse: () => '');
 
               if (otherUserId.isEmpty) {
-                print('No other participant found in ${doc.id}');
                 continue;
               }
 
               final userDoc = await _firestore.collection('users').doc(otherUserId).get();
               if (!userDoc.exists) {
-                print('User document not found for $otherUserId');
                 continue;
               }
 
@@ -84,7 +81,6 @@ class ChatRepositoryImpl implements ChatRepository {
                   .get()
                   .then((snapshot) => snapshot.size);
 
-              // Handle lastActivity
               DateTime lastActivity;
               try {
                 if (data['lastActivity'] != null && data['lastActivity'] is Timestamp) {
